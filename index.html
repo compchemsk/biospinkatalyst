@@ -1029,66 +1029,142 @@ dialog#settings::backdrop{background:rgba(5,8,12,.55);backdrop-filter:blur(4px)}
 </section>
 
 <section id="apps">
+  <style>
+    /* BioQubit Atlas card: reuses the BondX Studio styles, adds a few of its own */
+    .apps-stack{display:grid;gap:28px}
+    .app.flip .app-win{order:2;transform:perspective(1200px) rotateY(-6deg) rotateX(2deg)}
+    .app.flip:hover .app-win{transform:none}
+    .app.atlas{background:linear-gradient(135deg,#071f2a,#0a1830 55%,#0d2a26)}
+    .app.atlas::after{background:radial-gradient(closest-side,rgba(45,212,191,.32),transparent);left:-140px;right:auto}
+    .app.atlas .app-k{color:#5eead4}
+    .app.atlas .app-txt h3{background:linear-gradient(100deg,#fff,#99f6e4 55%,#9cd3ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .app.atlas .pipe li::before{background:rgba(20,184,166,.28);border-color:rgba(94,234,212,.5);color:#ccfbf1}
+    .app.atlas .btn.pri{background:linear-gradient(100deg,#0d9488,#38bdf8);box-shadow:0 10px 30px -10px rgba(45,212,191,.7)}
+    .atl-search{display:flex;align-items:center;gap:8px;margin:12px 12px 4px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#7f93ab;font-family:var(--f-mono);font-size:11px}
+    .atl-search kbd{margin-left:auto;font-family:inherit;font-size:10px;padding:1px 6px;border-radius:4px;border:1px solid rgba(255,255,255,.2)}
+    .atl-body{display:grid;grid-template-columns:1fr 150px;gap:10px;padding:8px 12px 12px}
+    .atl-rows{display:flex;flex-direction:column;gap:6px}
+    .atl-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;background:rgba(255,255,255,.04);font-size:12px;color:#e7ebee}
+    .atl-row span{font-family:var(--f-mono);font-size:10px;padding:1px 7px;border-radius:999px;background:rgba(45,212,191,.18);color:#99f6e4;white-space:nowrap}
+    .atl-row.new{box-shadow:inset 2px 0 0 #5eead4;background:rgba(45,212,191,.1)}
+    .atl-sim{border-radius:8px;background:rgba(255,255,255,.04);padding:8px;display:flex;flex-direction:column;gap:4px}
+    .atl-sim .ws-h{color:#5eead4}
+    .atl-sim svg{width:100%;height:auto}
+    .atl-curve{stroke-dasharray:240;stroke-dashoffset:240;animation:atlDraw 4s ease-in-out infinite}
+    @keyframes atlDraw{0%{stroke-dashoffset:240}45%,85%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+    @media (max-width:900px){.app.flip .app-win{order:0;transform:none}.atl-body{grid-template-columns:1fr}}
+    @media (prefers-reduced-motion: reduce){.atl-curve{animation:none;stroke-dashoffset:0}}
+  </style>
   <div class="wrap">
     <div class="sec-head"><div class="mono">apps</div><h2>Tools I <em>build</em></h2>
       <p>Open-source software that turns my research methods into tools anyone can use in a browser.</p></div>
 
-    <div class="app">
-      <div class="app-win" aria-hidden="true">
-        <div class="win-bar"><i></i><i></i><i></i><span class="mono">compchemsk.github.io/BondX-Studio</span></div>
-        <div class="win-body">
-          <div class="win-side">
-            <div class="mono ws-h">detected X-bonds</div>
-            <div class="ws-row on"><b>C–I···O</b><span>example 1</span></div>
-            <div class="ws-row"><b>C–Cl···N</b><span>example 2</span></div>
-            <div class="ws-row"><b>C–Br···S</b><span>example 3</span></div>
-            <div class="mono ws-h" style="margin-top:12px">ALMO-EDA</div>
-            <div class="eda"><span style="--w:62%;--c:#1463ff">POL</span><span style="--w:38%;--c:#8b5cf6">CT</span></div>
+    <div class="apps-stack">
+
+      <!-- ============ BondX Studio ============ -->
+      <div class="app">
+        <div class="app-win" aria-hidden="true">
+          <div class="win-bar"><i></i><i></i><i></i><span class="mono">compchemsk.github.io/BondX-Studio</span></div>
+          <div class="win-body">
+            <div class="win-side">
+              <div class="mono ws-h">detected X-bonds</div>
+              <div class="ws-row on"><b>C–I···O</b><span>example 1</span></div>
+              <div class="ws-row"><b>C–Cl···N</b><span>example 2</span></div>
+              <div class="ws-row"><b>C–Br···S</b><span>example 3</span></div>
+              <div class="mono ws-h" style="margin-top:12px">ALMO-EDA</div>
+              <div class="eda"><span style="--w:62%;--c:#1463ff">POL</span><span style="--w:38%;--c:#8b5cf6">CT</span></div>
+            </div>
+            <svg class="win-mol" viewBox="0 0 360 240">
+              <defs>
+                <radialGradient id="gI" cx="40%" cy="35%"><stop offset="0" stop-color="#d8c4ff"/><stop offset="1" stop-color="#6b3fa3"/></radialGradient>
+                <radialGradient id="gO" cx="40%" cy="35%"><stop offset="0" stop-color="#ffb4a8"/><stop offset="1" stop-color="#d0342c"/></radialGradient>
+                <radialGradient id="gC" cx="40%" cy="35%"><stop offset="0" stop-color="#cfd6de"/><stop offset="1" stop-color="#5f6b78"/></radialGradient>
+                <radialGradient id="gHole" cx="50%" cy="50%"><stop offset="0" stop-color="#38d0ff" stop-opacity=".95"/><stop offset="1" stop-color="#1463ff" stop-opacity="0"/></radialGradient>
+              </defs>
+              <g stroke="#8a96a3" stroke-width="5" stroke-linecap="round">
+                <path d="M58 92 L82 78 L106 92 L106 120 L82 134 L58 120 Z" fill="none"/>
+                <line x1="106" y1="106" x2="150" y2="118"/>
+                <line x1="268" y1="126" x2="300" y2="100"/><line x1="268" y1="126" x2="300" y2="156"/>
+              </g>
+              <circle class="hole" cx="196" cy="124" r="22" fill="url(#gHole)"/>
+              <line class="xb" x1="196" y1="124" x2="262" y2="126" stroke="#38d0ff" stroke-width="3" stroke-dasharray="6 6"/>
+              <circle cx="82" cy="78" r="9" fill="url(#gC)"/><circle cx="106" cy="92" r="9" fill="url(#gC)"/><circle cx="106" cy="120" r="9" fill="url(#gC)"/>
+              <circle cx="82" cy="134" r="9" fill="url(#gC)"/><circle cx="58" cy="120" r="9" fill="url(#gC)"/><circle cx="58" cy="92" r="9" fill="url(#gC)"/>
+              <circle cx="170" cy="122" r="26" fill="url(#gI)"/>
+              <circle cx="270" cy="126" r="14" fill="url(#gO)"/>
+              <circle cx="300" cy="100" r="9" fill="url(#gC)"/><circle cx="300" cy="156" r="9" fill="url(#gC)"/>
+              <text x="164" y="128" font-family="JetBrains Mono, monospace" font-size="13" fill="#fff">I</text>
+              <text x="265" y="131" font-family="JetBrains Mono, monospace" font-size="11" fill="#fff">O</text>
+              <text x="190" y="164" font-family="JetBrains Mono, monospace" font-size="11" fill="#38d0ff">σ-hole</text>
+              <text x="206" y="112" font-family="JetBrains Mono, monospace" font-size="11" fill="#9fb3c8">d(I···O)</text>
+              <text x="130" y="200" font-family="JetBrains Mono, monospace" font-size="11" fill="#9fb3c8">∠C–I···O ≈ linear</text>
+            </svg>
           </div>
-          <svg class="win-mol" viewBox="0 0 360 240">
-            <defs>
-              <radialGradient id="gI" cx="40%" cy="35%"><stop offset="0" stop-color="#d8c4ff"/><stop offset="1" stop-color="#6b3fa3"/></radialGradient>
-              <radialGradient id="gO" cx="40%" cy="35%"><stop offset="0" stop-color="#ffb4a8"/><stop offset="1" stop-color="#d0342c"/></radialGradient>
-              <radialGradient id="gC" cx="40%" cy="35%"><stop offset="0" stop-color="#cfd6de"/><stop offset="1" stop-color="#5f6b78"/></radialGradient>
-              <radialGradient id="gHole" cx="50%" cy="50%"><stop offset="0" stop-color="#38d0ff" stop-opacity=".95"/><stop offset="1" stop-color="#1463ff" stop-opacity="0"/></radialGradient>
-            </defs>
-            <g stroke="#8a96a3" stroke-width="5" stroke-linecap="round">
-              <path d="M58 92 L82 78 L106 92 L106 120 L82 134 L58 120 Z" fill="none"/>
-              <line x1="106" y1="106" x2="150" y2="118"/>
-              <line x1="268" y1="126" x2="300" y2="100"/><line x1="268" y1="126" x2="300" y2="156"/>
-            </g>
-            <circle class="hole" cx="196" cy="124" r="22" fill="url(#gHole)"/>
-            <line class="xb" x1="196" y1="124" x2="262" y2="126" stroke="#38d0ff" stroke-width="3" stroke-dasharray="6 6"/>
-            <circle cx="82" cy="78" r="9" fill="url(#gC)"/><circle cx="106" cy="92" r="9" fill="url(#gC)"/><circle cx="106" cy="120" r="9" fill="url(#gC)"/>
-            <circle cx="82" cy="134" r="9" fill="url(#gC)"/><circle cx="58" cy="120" r="9" fill="url(#gC)"/><circle cx="58" cy="92" r="9" fill="url(#gC)"/>
-            <circle cx="170" cy="122" r="26" fill="url(#gI)"/>
-            <circle cx="270" cy="126" r="14" fill="url(#gO)"/>
-            <circle cx="300" cy="100" r="9" fill="url(#gC)"/><circle cx="300" cy="156" r="9" fill="url(#gC)"/>
-            <text x="164" y="128" font-family="JetBrains Mono, monospace" font-size="13" fill="#fff">I</text>
-            <text x="265" y="131" font-family="JetBrains Mono, monospace" font-size="11" fill="#fff">O</text>
-            <text x="190" y="164" font-family="JetBrains Mono, monospace" font-size="11" fill="#38d0ff">σ-hole</text>
-            <text x="206" y="112" font-family="JetBrains Mono, monospace" font-size="11" fill="#9fb3c8">d(I···O)</text>
-            <text x="130" y="200" font-family="JetBrains Mono, monospace" font-size="11" fill="#9fb3c8">∠C–I···O ≈ linear</text>
-          </svg>
+          <div class="win-foot mono"><span>trajectory frame</span><span class="bar"><i></i></span><span class="nbo">NBO E(2) ✓</span></div>
         </div>
-        <div class="win-foot mono"><span>trajectory frame</span><span class="bar"><i></i></span><span class="nbo">NBO E(2) ✓</span></div>
+
+        <div class="app-txt">
+          <div class="mono app-k">open source · MIT licence · runs in the browser</div>
+          <h3>BondX Studio</h3>
+          <p class="app-lede">Finds and characterises halogen bonds in proteins, from a single crystal structure to a full molecular dynamics trajectory.</p>
+          <ol class="pipe">
+            <li><b>Detect</b><span>Structure-based halogen-bond detection in protein PDB files and MD trajectories</span></li>
+            <li><b>Verify</b><span>Quantum-chemical check through NBO second-order E(2) energies, from QM-cluster or QM/MM single points</span></li>
+            <li><b>Decompose</b><span>ALMO-EDA in Q-Chem separates polarisation from charge transfer</span></li>
+            <li><b>Plot</b><span>Publication-quality figures straight from the analysis</span></li>
+          </ol>
+          <div class="cta">
+            <a class="btn pri" href="https://compchemsk.github.io/BondX-Studio" target="_blank" rel="noopener">Launch BondX Studio</a>
+            <a class="btn" href="https://github.com/compchemsk/BondX-Studio" target="_blank" rel="noopener">Source on GitHub</a>
+          </div>
+        </div>
       </div>
 
-      <div class="app-txt">
-        <div class="mono app-k">open source · MIT licence · runs in the browser</div>
-        <h3>BondX Studio</h3>
-        <p class="app-lede">Finds and characterises halogen bonds in proteins, from a single crystal structure to a full molecular dynamics trajectory.</p>
-        <ol class="pipe">
-          <li><b>Detect</b><span>Structure-based halogen-bond detection in protein PDB files and MD trajectories</span></li>
-          <li><b>Verify</b><span>Quantum-chemical check through NBO second-order E(2) energies, from QM-cluster or QM/MM single points</span></li>
-          <li><b>Decompose</b><span>ALMO-EDA in Q-Chem separates polarisation from charge transfer</span></li>
-          <li><b>Plot</b><span>Publication-quality figures straight from the analysis</span></li>
-        </ol>
-        <div class="cta">
-          <a class="btn pri" href="https://compchemsk.github.io/BondX-Studio" target="_blank" rel="noopener">Launch BondX Studio</a>
-          <a class="btn" href="https://github.com/compchemsk/BondX-Studio" target="_blank" rel="noopener">Source on GitHub</a>
+      <!-- ============ BioQubit Atlas ============ -->
+      <div class="app atlas flip">
+        <div class="app-win" aria-hidden="true">
+          <div class="win-bar"><i></i><i></i><i></i><span class="mono">compchemsk.github.io/Modern_Quantum_Biology</span></div>
+          <div class="atl-search">search titles, authors, journals, tags<kbd>/</kbd></div>
+          <div class="atl-body">
+            <div class="atl-rows">
+              <div class="atl-row new">Protein spin qubits<span>new today</span></div>
+              <div class="atl-row">Radical pairs<span>theme</span></div>
+              <div class="atl-row">Magnetoreception<span>theme</span></div>
+              <div class="atl-row">LOV photochemistry<span>theme</span></div>
+              <div class="atl-row">Posner molecules<span>theme</span></div>
+            </div>
+            <div class="atl-sim">
+              <div class="mono ws-h">radical pair</div>
+              <svg viewBox="0 0 130 92">
+                <line x1="12" y1="78" x2="124" y2="78" stroke="rgba(255,255,255,.25)"/>
+                <line x1="12" y1="78" x2="12" y2="8" stroke="rgba(255,255,255,.25)"/>
+                <path id="atlP" class="atl-curve" d="M14 30 C 26 30, 32 52, 46 58 S 90 62, 120 62" fill="none" stroke="#5eead4" stroke-width="2.2" stroke-linecap="round"/>
+                <circle r="3.5" fill="#fff"><animateMotion dur="4s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.45;1" calcMode="linear"><mpath href="#atlP"/></animateMotion></circle>
+                <text x="16" y="90" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#7f93ab">B 0 → 5 mT</text>
+                <text x="16" y="14" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#7f93ab">singlet yield</text>
+              </svg>
+            </div>
+          </div>
+          <div class="win-foot mono"><span>watcher · 06:47 IST</span><span class="bar"><i></i></span><span class="nbo" style="color:#5eead4">BibTeX ↓</span></div>
+        </div>
+
+        <div class="app-txt">
+          <div class="mono app-k">living literature map · curated at IIT Kharagpur · updated every morning</div>
+          <h3>BioQubit Atlas</h3>
+          <p class="app-lede">A curated, searchable collection of research on biological qubits and spin-based quantum biology, from protein spin qubits and radical pairs to magnetoreception, LOV photochemistry and Posner molecules.</p>
+          <ol class="pipe">
+            <li><b>Watch</b><span>Every morning a GitHub Action searches OpenAlex, arXiv and Europe PMC for new papers</span></li>
+            <li><b>Filter</b><span>Each paper is scored for relevance, checked against journal and preprint lists, and de-duplicated</span></li>
+            <li><b>Curate</b><span>Survivors become GitHub issues, and nothing joins the atlas until I approve it</span></li>
+            <li><b>Explore</b><span>Search and sort by theme or timeline, read the starter library, download BibTeX, and play with a radical-pair simulator</span></li>
+          </ol>
+          <div class="cta">
+            <a class="btn pri" href="https://compchemsk.github.io/Modern_Quantum_Biology/" target="_blank" rel="noopener">Open BioQubit Atlas</a>
+            <a class="btn" href="https://github.com/compchemsk/Modern_Quantum_Biology" target="_blank" rel="noopener">Source on GitHub</a>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
